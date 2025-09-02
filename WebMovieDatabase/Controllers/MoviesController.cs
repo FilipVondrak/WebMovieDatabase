@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebMovieDatabase.Data;
 using WebMovieDatabase.Models;
 
@@ -38,11 +39,15 @@ public class MoviesController : Controller
     [HttpGet]
     public IActionResult Details(int id)
     {
-        var movie = _context.Movies.FirstOrDefault(m => m.Id == id);
+        var movie = _context.Movies
+            .Include(m => m.Actors)
+            .FirstOrDefault(m => m.Id == id);
+
         if (movie == null)
         {
             return NotFound();
         }
+
         return View(movie);
     }
 

@@ -11,5 +11,16 @@ public class ApplicationDbContext : IdentityDbContext
     {
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Movie>()
+            .HasMany(m => m.Actors)
+            .WithMany(a => a.Movies)
+            .UsingEntity(j => j.ToTable("MovieActors"));
+    }
+
     public DbSet<Movie> Movies { get; set; }
+    public DbSet<Actor> Actors { get; set; }
 }

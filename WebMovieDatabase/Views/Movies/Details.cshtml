@@ -1,0 +1,16 @@
+@model Movie
+
+<h2>@Model.Title</h2>
+
+<div class="card" style="width: 400px;">
+    <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Title" />
+
+    <div class="card-body">
+        <h5 class="card-title">@Model.Title</h5>
+        <p class="card-text">@Model.Description</p>
+    </div>
+
+    <div class="card-footer">
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
