@@ -1,0 +1,46 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@model IEnumerable<Movie>
+
+@{
+    ViewData["Title"] = "Movie list";
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h1>Movie List</h1>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <p>
+        <a asp-action="AddMovie" class="btn btn-success">Add New Movie</a>
+    </p>
+}
+
+<div class="row">
+    @foreach (var movie in Model)
+    {
+        <div class="col-md-4 mb-4" style="height: 400px;">
+            <div class="card h-100">
+                <!-- image -->
+                <img src="@movie.ImageUrl" class="card-img-top h-50" alt="@movie.Title" />
+
+                <!-- text -->
+                <div class="card-body flex-grow-1">
+                    <h5 class="card-title">@movie.Title</h5>
+                    <p class="card-text">@movie.Description</p>
+                </div>
+
+                <!-- buttons -->
+                <div class="card-footer text-end">
+                    <form asp-action="Delete" asp-route-id="@movie.Id" method="post" style="display:inline">
+                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    </form>
+
+                    <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-primary btn-sm">Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
