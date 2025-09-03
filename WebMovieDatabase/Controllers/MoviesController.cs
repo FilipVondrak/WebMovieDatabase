@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +19,11 @@ public class MoviesController(ApplicationDbContext context) : Controller
     [HttpPost]
     [Authorize]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddMovie(Movie movie)
+    public async Task<IActionResult> AddMovie([Bind("Title, ImageUrl")] Movie movie)
     {
         if (ModelState.IsValid)
         {
-            await context.Movies.AddAsync(movie);
+            context.Movies.Add(movie);
             await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -64,5 +65,11 @@ public class MoviesController(ApplicationDbContext context) : Controller
     {
         var movies = await context.Movies.ToListAsync();
         return View(movies);
+    }
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
