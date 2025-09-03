@@ -18,14 +18,14 @@
     <div class="row">
         @foreach (var movie in Model)
         {
-            <div class="col-md-4 mb-4" style="height: 400px;">
+            <div class="col-md-4 mb-4 overflow-hidden" style="height: 400px;">
                 <div class="card h-100">
 
                     <!-- image -->
                     <img src="@movie.ImageUrl" class="card-img-top h-50" alt="@movie.Title"/>
 
                     <!-- text -->
-                    <div class="card-body flex-grow-1">
+                    <div class="card-body flex-grow-1 overflow-hidden">
                         <h5 class="card-title">@movie.Title</h5>
                         <p class="card-text">@movie.Description</p>
                     </div>
