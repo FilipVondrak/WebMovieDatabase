@@ -34,7 +34,7 @@
             <!-- action Buttons -->
             <div class="mt-4">
                 <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                <a asp-action="Edit" class="btn btn-secondary">Edit</a>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
                 <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline">
                     <button type="submit" class="btn btn-danger">Remove</button>
                 </form>
