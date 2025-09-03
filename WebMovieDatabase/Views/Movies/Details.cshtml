@@ -8,6 +8,13 @@
     <div class="card-body">
         <h5 class="card-title">@Model.Title</h5>
         <p class="card-text">@Model.Description</p>
+        <p class="card-text">Actors: </p>
+        <ul>
+            @foreach (var actor in Model.Actors)
+            {
+                <li>@actor.Name</li>
+            }
+        </ul>
     </div>
 
     <div class="card-footer">

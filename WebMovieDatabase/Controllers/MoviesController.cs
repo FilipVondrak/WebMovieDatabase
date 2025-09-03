@@ -7,15 +7,8 @@ using WebMovieDatabase.Models;
 namespace WebMovieDatabase.Controllers;
 
 
-public class MoviesController : Controller
+public class MoviesController(ApplicationDbContext context) : Controller
 {
-    private readonly ApplicationDbContext _context;
-
-    public MoviesController(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
     [Authorize]
     public IActionResult AddMovie()
     {
@@ -25,23 +18,25 @@ public class MoviesController : Controller
     [HttpPost]
     [Authorize]
     [ValidateAntiForgeryToken]
-    public IActionResult AddMovie(Movie movie)
+    public async Task<IActionResult> AddMovie(Movie movie)
     {
         if (ModelState.IsValid)
         {
-            _context.Movies.Add(movie);
-            _context.SaveChanges();
+            await context.Movies.AddAsync(movie);
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(movie);
     }
 
     [HttpGet]
-    public IActionResult Details(int id)
+    public async Task<IActionResult> Details(int id)
     {
-        var movie = _context.Movies
+        // fetches the movie with the given id
+        // also ensures to include the actors in the movie
+        var movie = await context.Movies
             .Include(m => m.Actors)
-            .FirstOrDefault(m => m.Id == id);
+            .FirstOrDefaultAsync(m => m.Id == id);
 
         if (movie == null)
         {
@@ -54,20 +49,20 @@ public class MoviesController : Controller
     [HttpPost]
     [Authorize]
     [ValidateAntiForgeryToken]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        var movie = _context.Movies.Find(id);
+        var movie = await context.Movies.FindAsync(id);
         if (movie != null)
         {
-            _context.Movies.Remove(movie);
-            _context.SaveChanges();
+            context.Movies.Remove(movie);
+            await context.SaveChangesAsync();
         }
         return RedirectToAction(nameof(Index));
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var movies = _context.Movies.ToList();
+        var movies = await context.Movies.ToListAsync();
         return View(movies);
     }
 }
