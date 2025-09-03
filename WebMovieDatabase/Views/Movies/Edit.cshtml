@@ -1,0 +1,45 @@
+@model AddMovieViewModel
+
+@{
+    ViewBag.Title = $"Editing {Model.Movie.Title}";
+    Layout = "_Layout";
+}
+
+<form asp-action="Edit" method="post">
+    <div style="max-width: 500px; margin: auto;">
+        <div class="d-flex flex-column gap-3">
+            <h2 class="text-center">Editing @Model.Movie.Title</h2>
+
+            <input type="hidden" asp-for="Movie.Id" />
+
+            <!-- input for title -->
+            <div class="form-group">
+                <label asp-for="@Model.Movie.Title"></label>
+                <input asp-for="@Model.Movie.Title" class="form-control" />
+                <span asp-validation-for="@Model.Movie.Title" class="text-danger"></span>
+            </div>
+
+            <!-- input for image url -->
+            <div class="form-group">
+                <label asp-for="@Model.Movie.ImageUrl"></label>
+                <input asp-for="@Model.Movie.ImageUrl" class="form-control" />
+                <span asp-validation-for="@Model.Movie.ImageUrl" class="text-danger"></span>
+            </div>
+
+            <!-- textarea for description -->
+            <div class="form-group">
+                <label asp-for="@Model.Movie.Description"></label>
+                <textarea asp-for="@Model.Movie.Description" class="form-control"></textarea>
+            </div>
+
+            <!-- dropdown list of actors -->
+            <div class="form-group">
+                <label class="form-label">Actors</label>
+                <select asp-for="@Model.SelectedActorIds" asp-items="@Model.AvailableActors" class="form-control" multiple>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Update</button>
+    </div>
+</form>
