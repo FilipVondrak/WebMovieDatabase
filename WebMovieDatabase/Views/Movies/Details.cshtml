@@ -1,26 +1,53 @@
 @model Movie
 
-<h2>@Model.Title</h2>
+<div class="container mt-4">
+    <div class="row">
 
-<div class="card" style="width: 400px;">
-    <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Title" />
+        <!-- left column - image and actors -->
+        <div class="col-md-4">
+            <img src="@Model.ImageUrl" class="img-fluid rounded shadow-sm" alt="@Model.Title"/>
 
-    <div class="card-body">
-        <h5 class="card-title">@Model.Title</h5>
-        <p class="card-text">@Model.Description</p>
-        <p class="card-text">Actors: </p>
-        <ul>
-            @foreach (var actor in Model.Actors)
-            {
-                <li>@actor.Name</li>
-            }
-        </ul>
+            <h5 class="mt-4">Actors</h5>
+            <ul class="list-unstyled">
+                @foreach (var actor in Model.Actors)
+                {
+                    <li>@actor.Name</li>
+                }
+            </ul>
+        </div>
+
+        <!-- right column - title, rating, description -->
+        <div class="col-md-8">
+            <h1>@Model.Title</h1>
+
+            <!-- rating placeholder -->
+            <div class="mb-3 fs-4 text-warning">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <i class="far fa-star"></i>
+            </div>
+
+            <p class="lead">@Model.Description</p>
+
+            <!-- action Buttons -->
+            <div class="mt-4">
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                <a asp-action="Edit" class="btn btn-secondary">Edit</a>
+                <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-danger">Remove</button>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <div class="card-footer">
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-        <form asp-action="Delete" asp-route-id="@Model.Id" method="post" style="display:inline">
-            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-        </form>
+    <!-- reviews -->
+    <hr class="my-4" />
+    <div class="row">
+        <div class="col-12">
+            <h2>Reviews</h2>
+            <p>TODO</p>
+        </div>
     </div>
 </div>
