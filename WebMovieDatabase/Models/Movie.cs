@@ -12,6 +12,6 @@ public class Movie
     public string? Description { get; set; } = string.Empty;
     public string? ImageUrl { get; set; } = string.Empty;
 
-    // Navigation properties
     public ICollection<Actor> Actors { get; set; } = new List<Actor>();
+    public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 }

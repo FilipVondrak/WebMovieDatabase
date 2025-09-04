@@ -33,6 +33,7 @@
 
             <!-- action Buttons -->
             <div class="mt-4">
+                <a asp-controller="Ratings" asp-action="AddRating" asp-route-id="@Model.Id" class="btn btn-primary">Rate this movie</a>
                 <a asp-action="Index" class="btn btn-secondary">Back to List</a>
                 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
                 <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline">

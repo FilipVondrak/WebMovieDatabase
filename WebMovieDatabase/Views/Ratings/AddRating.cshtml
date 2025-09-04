@@ -1,0 +1,44 @@
+@model AddRatingViewModel
+
+@{
+    ViewBag.Title = $"Rating {Model.MovieTitle}";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="row">
+        <!-- left column - movie info -->
+        <div class="col-md-4">
+            <img src="@Model.MovieImageUrl" class="img-fluid rounded shadow-sm" alt="@Model.MovieTitle"/>
+
+            <h1>@Model.MovieTitle</h1>
+
+            <!-- rating placeholder -->
+            <div class="mb-3 fs-4 text-warning">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <i class="far fa-star"></i>
+            </div>
+
+            <p class="lead">@Model.MovieDescription</p>
+        </div>
+
+        <!-- right column - rating form -->
+        <form class="col-md-8" method="post">
+            <input type="hidden" asp-for="MovieId" value="@Model.MovieId"/>
+
+            <div class="mb-3">
+                <label asp-for="@Model.StarRating" class="form-label">Rating</label>
+                <input asp-for="@Model.StarRating" type="number" class="form-control" min="1" max="5" step="1" required>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="@Model.StarRating"></label>
+                <textarea asp-for="@Model.Comment" class="form-control"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
