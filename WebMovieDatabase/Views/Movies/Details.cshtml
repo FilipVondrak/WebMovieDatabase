@@ -20,7 +20,7 @@
         <div class="col-md-8">
             <h1>@Model.Title</h1>
 
-            <!-- rating placeholder -->
+            <!-- rating stars -->
             <div class="mb-3 fs-4 text-warning">
                 <i class="fas fa-star"></i>
                 <i class="fas fa-star"></i>
@@ -48,7 +48,43 @@
     <div class="row">
         <div class="col-12">
             <h2>Reviews</h2>
-            <p>TODO</p>
+            <div class="d-flex flex-column gap-1">
+                @foreach (var rating in Model.Ratings)
+                {
+                    <div class="card mb-3 p-3 d-flex flex-row align-items-center">
+                        <div class="col-auto">
+                            <img src="~/images/account.png" class="rounded-circle" width="64" height="64" alt="user icon"/>
+                        </div>
+
+                        <div class="col ps-3">
+                            <h6 class="fw-bold">@rating.User.UserName</h6>
+
+                            <div class="d-flex flex-row mb-2">
+                                @for (int i = 4; i >= 0; i--)
+                                {
+                                    // TODO: redo later
+                                    if (rating.StarRating > 1)
+                                    {
+                                        <img src="~/images/star-full.png" class="img-fluid" width="24" height="24" alt="star-full"/>
+                                        rating.StarRating--;
+                                    }
+                                    else if (rating.StarRating > 0)
+                                    {
+                                        <img src="~/images/star-half.png" class="img-fluid" width="24" height="24" alt="star-full"/>
+                                        rating.StarRating = 0;
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/star-empty.png" class="img-fluid" width="24" height="24" alt="star-empty"/>
+                                    }
+                                }
+                            </div>
+
+                            <p>@rating.Comment</p>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>

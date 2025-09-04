@@ -64,6 +64,8 @@ public class MoviesController(ApplicationDbContext context) : Controller
         // also ensures to include the actors in the movie
         var movie = await context.Movies
             .Include(m => m.Actors)
+            .Include(m => m.Ratings)
+            .ThenInclude(r => r.User)
             .FirstOrDefaultAsync(m => m.Id == id);
 
         if (movie == null)
