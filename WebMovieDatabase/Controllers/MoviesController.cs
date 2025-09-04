@@ -63,8 +63,8 @@ public class MoviesController(ApplicationDbContext context) : Controller
         // fetches the movie with the given id
         // also ensures to include the actors in the movie
         var movie = await context.Movies
-            .Include(m => m.Actors)
-            .Include(m => m.Ratings)
+            .Include(m => m.Actors!)
+            .Include(m => m.Ratings!)
             .ThenInclude(r => r.User)
             .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -167,7 +167,7 @@ public class MoviesController(ApplicationDbContext context) : Controller
 
     public async Task<IActionResult> Index()
     {
-        var movies = await context.Movies.ToListAsync();
+        var movies = await context.Movies.Include(m => m.Ratings).ToListAsync();
         return View(movies);
     }
 

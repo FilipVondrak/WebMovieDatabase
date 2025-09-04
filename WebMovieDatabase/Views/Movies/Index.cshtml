@@ -31,7 +31,37 @@
                     </div>
 
                     <!-- buttons -->
-                    <div class="card-footer text-end bg-white">
+                    <div class="card-footer d-flex justify-content-between bg-white align-items-center">
+                        <div class="d-flex flex-row ">
+                            @{
+                                double averageRating = 0;
+
+                                if (movie.Ratings != null && movie.Ratings.Any())
+                                {
+                                    averageRating = movie.Ratings.Average(r => r.StarRating);
+                                }
+                                else averageRating = 0;
+                            }
+
+                            @for (int j = 1; j <= 5; j++)
+                            {
+                                if (averageRating >= 1)
+                                {
+                                    <img src="~/images/star-full-yellow.png" class="img-fluid" width="24" height="24" alt="star-full"/>
+                                    averageRating--;
+                                }
+                                else if (averageRating <= 0)
+                                {
+                                    <img src="~/images/star-empty-yellow.png" class="img-fluid" width="24" height="24" alt="star-full"/>
+                                    averageRating--;
+                                }
+                                else
+                                {
+                                    <img src="~/images/star-half-yellow.png" class="img-fluid" width="24" height="24" alt="star-full"/>
+                                    averageRating--;
+                                }
+                            }
+                        </div>
 
                         <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-primary btn-sm">Details</a>
                     </div>
