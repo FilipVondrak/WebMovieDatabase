@@ -58,7 +58,7 @@ public class MoviesController(ApplicationDbContext context) : Controller
     public async Task<IActionResult> Details(int id)
     {
         if (id == 0)
-            return Content("Invalid movie id");
+            return RedirectToAction("InvalidId", "Error");
 
         // fetches the movie with the given id
         // also ensures to include the actors in the movie
@@ -82,7 +82,7 @@ public class MoviesController(ApplicationDbContext context) : Controller
     public async Task<IActionResult> Delete(int id)
     {
         if (id == 0)
-            return Content("Invalid movie id");
+            return RedirectToAction("InvalidId", "Error");;
 
         var movie = await context.Movies.FindAsync(id);
         if (movie != null)
@@ -96,9 +96,8 @@ public class MoviesController(ApplicationDbContext context) : Controller
     [Authorize]
     public async Task<IActionResult> Edit(int id)
     {
-        // TODO: implement not found page
         if (id == 0)
-            return Content("Invalid movie id");
+            return RedirectToAction("InvalidId", "Error");
 
         // fetches the movie with the given id
         // ensures to include the actors in the movie
@@ -106,7 +105,7 @@ public class MoviesController(ApplicationDbContext context) : Controller
 
         if (movie == null)
         {
-            return Content("Movie not found");
+            return RedirectToAction("MovieNotFound", "Error");
         }
 
         var staringActorIds = movie.Actors.Select(a => a.Id).ToList();
@@ -177,11 +176,5 @@ public class MoviesController(ApplicationDbContext context) : Controller
             movies = movies.Where(m => m.Title.ToLower().Contains(searchTitle.ToLower())).ToList();
 
         return View(movies);
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
