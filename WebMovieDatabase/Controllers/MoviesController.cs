@@ -165,9 +165,17 @@ public class MoviesController(ApplicationDbContext context) : Controller
         return View(model);
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string searchTitle)
     {
-        var movies = await context.Movies.Include(m => m.Ratings).ToListAsync();
+        ViewData["CurrentFilter"] = searchTitle;
+
+        var movies = await context.Movies
+            .Include(m => m.Ratings)
+            .ToListAsync();
+
+        if (!string.IsNullOrEmpty(searchTitle))
+            movies = movies.Where(m => m.Title.ToLower().Contains(searchTitle.ToLower())).ToList();
+
         return View(movies);
     }
 

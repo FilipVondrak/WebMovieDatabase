@@ -9,8 +9,8 @@
 
 <div class="d-flex flex-column gap-3">
     <div class="border-black border-1">
-        <form class="input-group">
-            <input for="Title" type="text" class="form-control" placeholder="Search...">
+        <form class="input-group" asp-action="Index" method="get">
+            <input name="searchTitle" type="text" class="form-control" placeholder="Search..." value="@ViewData["CurrentFilter"]">
             <button class="btn btn-primary">Search</button>
         </form>
     </div>
