@@ -18,6 +18,7 @@
 1. clone the repo
 2. go into the directory with the source code
 3. run this command: `dotnet run`
+4. the web site now runs at `localhost:5058`
 
 ## Tested
 the app is tested to run on:
