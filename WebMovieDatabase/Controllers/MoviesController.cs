@@ -12,6 +12,12 @@ namespace WebMovieDatabase.Controllers;
 public class MoviesController(ApplicationDbContext context) : Controller
 {
 
+    /// <summary>
+    /// AddMovie get function which loads a list of all actors from database and returns it to the view
+    /// </summary>
+    /// <returns>
+    /// the view with the all actors
+    /// </returns>
     [Authorize]
     public async Task<IActionResult> AddMovie()
     {
@@ -30,6 +36,11 @@ public class MoviesController(ApplicationDbContext context) : Controller
         return View(viewModel);
     }
 
+    /// <summary>
+    /// addMovie post function, receives data from page and saves them to the db
+    /// </summary>
+    /// <param name="model">model with the filled movie parameters from user in page view</param>
+    /// <returns>if successful redirects the user to index page, else returns the AddMovie page</returns>
     [HttpPost]
     [Authorize]
     [ValidateAntiForgeryToken]
@@ -54,6 +65,13 @@ public class MoviesController(ApplicationDbContext context) : Controller
         return View(model);
     }
 
+    /// <summary>
+    /// returns the details view with all movie details including:
+    ///     - actors
+    ///     - ratings
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>the details view or InvalidId page</returns>
     [HttpGet]
     public async Task<IActionResult> Details(int id)
     {
@@ -70,12 +88,17 @@ public class MoviesController(ApplicationDbContext context) : Controller
 
         if (movie == null)
         {
-            return NotFound();
+            RedirectToAction("InvalidId", "Error");
         }
 
         return View(movie);
     }
 
+    /// <summary>
+    /// the post method for delete page
+    /// </summary>
+    /// <param name="id">the id of the movie to be deleted</param>
+    /// <returns>redirects back to index page</returns>
     [HttpPost]
     [Authorize]
     [ValidateAntiForgeryToken]
@@ -90,9 +113,14 @@ public class MoviesController(ApplicationDbContext context) : Controller
             context.Movies.Remove(movie);
             await context.SaveChangesAsync();
         }
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction("Index");
     }
 
+    /// <summary>
+    /// the get function for edit page
+    /// </summary>
+    /// <param name="id">the id of the movie to be edited</param>
+    /// <returns>the view and viewmodel with the movie details</returns>
     [Authorize]
     public async Task<IActionResult> Edit(int id)
     {
@@ -108,7 +136,7 @@ public class MoviesController(ApplicationDbContext context) : Controller
             return RedirectToAction("MovieNotFound", "Error");
         }
 
-        var staringActorIds = movie.Actors.Select(a => a.Id).ToList();
+        var staringActorIds = movie.Actors != null ? movie.Actors.Select(a => a.Id).ToList() : new List<int>();
         var allActors = await context.Actors.ToListAsync();
 
         // create a view model with the movie and the list of actors
@@ -128,6 +156,11 @@ public class MoviesController(ApplicationDbContext context) : Controller
         return View(viewModel);
     }
 
+    /// <summary>
+    /// gets the movie with the correct id from db and updates it with info from model
+    /// </summary>
+    /// <param name="model">the view model received from page</param>
+    /// <returns>view if model is not valid else redirects to index page</returns>
     [HttpPost]
     [Authorize]
     [ValidateAntiForgeryToken]
@@ -164,6 +197,21 @@ public class MoviesController(ApplicationDbContext context) : Controller
         return View(model);
     }
 
+    /// <summary>
+    /// Returns the index page with list of movies from the db
+    /// </summary>
+    ///
+    /// <param name="searchTitle">
+    /// string from the search panel, the movie name should include this string
+    /// </param>
+    ///
+    /// <param name="sorting">
+    /// a string which determines the way of sorting - null | alphabetically | best_rated | most_reviewed
+    /// </param>
+    ///
+    /// <returns>
+    /// the index page
+    /// </returns>
     public async Task<IActionResult> Index(string searchTitle, string sorting)
     {
         ViewData["CurrentFilter"] = searchTitle;

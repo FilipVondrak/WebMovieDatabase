@@ -13,12 +13,17 @@ public class RatingsController(
 
     : Controller {
 
+    /// <summary>
+    /// AddRating get function which checks and fetches the movie from db
+    /// </summary>
+    /// <param name="id">id of the movie to be rated</param>
+    /// <returns>the view with movie details, if id is invalid then redirects to error page</returns>
     public async Task<IActionResult> AddRating(int id)
     {
         var movie = await context.Movies.FindAsync(id);
 
         if (movie == null)
-            return NotFound();
+            return RedirectToAction("InvalidId",  "Error");
 
         var model = new AddRatingViewModel()
         {
@@ -30,6 +35,13 @@ public class RatingsController(
         return View(model);
     }
 
+    /// <summary>
+    /// AddRating post function which takes the inputted user data and stores them in the db with the associated movie
+    /// </summary>
+    /// <param name="model">
+    /// model received from page with the user inputted rating
+    /// </param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddRating(AddRatingViewModel model)
