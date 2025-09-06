@@ -88,7 +88,7 @@ public class MoviesController(ApplicationDbContext context) : Controller
 
         if (movie == null)
         {
-            RedirectToAction("InvalidId", "Error");
+            return RedirectToAction("InvalidId", "Error");
         }
 
         return View(movie);
