@@ -8,6 +8,10 @@
         averageRating = Model.Ratings.Average(r => r.StarRating);
     }
     else averageRating = 0;
+
+    // if the ratings or actors list are null set it as an empty list
+    Model.Ratings ??= new List<Rating>();
+    Model.Actors ??= new List<Actor>();
 }
 
 <div class="container mt-4">
@@ -19,7 +23,7 @@
 
             <h5 class="mt-4">Actors</h5>
             <ul class="list-unstyled">
-                @foreach (var actor in Model.Actors)
+                @foreach (var actor in Model.Actors!)
                 {
 
                     <li>@actor.Name</li>
@@ -73,7 +77,7 @@
         <div class="col-12">
             <h2>Reviews</h2>
             <div class="d-flex flex-column gap-1">
-                @foreach (var rating in Model.Ratings)
+                @foreach (var rating in Model.Ratings!)
                 {
                     <div class="card mb-3 p-3 d-flex flex-row align-items-center">
                         <div class="col-auto">
@@ -81,7 +85,7 @@
                         </div>
 
                         <div class="col ps-3">
-                            <h6 class="fw-bold">@rating.User.UserName</h6>
+                            <h6 class="fw-bold">@rating.User!.UserName</h6>
 
                             <div class="d-flex flex-row mb-2">
                                 @for (int i = 4; i >= 0; i--)

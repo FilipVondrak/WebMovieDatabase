@@ -15,9 +15,9 @@ public class Rating
     [StringLength(1000)]
     public string? Comment { get; set; }
 
-    [Required] public int MovieId { get; set; }
-    [Required] public string UserId { get; set; }
+    [Required] public required int MovieId { get; set; }
+    [Required] public required string UserId { get; set; }
 
-    public IdentityUser User { get; set; }
-    public Movie Movie { get; set; }
+    public IdentityUser? User { get; set; }
+    public Movie? Movie { get; set; }
 }

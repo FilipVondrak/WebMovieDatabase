@@ -51,6 +51,9 @@ public class RatingsController(
 
         var user = await userManager.GetUserAsync(User);
 
+        if(user == null)
+            return View(model);
+
         var rating = new Rating()
         {
             UserId = user.Id,
