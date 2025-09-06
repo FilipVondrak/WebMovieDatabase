@@ -1,3 +1,4 @@
+@using SQLitePCL
 @model IEnumerable<Movie>
 
 @{
@@ -9,9 +10,29 @@
 
 <div class="d-flex flex-column gap-3">
     <div class="border-black border-1">
-        <form class="input-group" asp-action="Index" method="get">
-            <input name="searchTitle" type="text" class="form-control" placeholder="Search..." value="@ViewData["CurrentFilter"]">
-            <button class="btn btn-primary">Search</button>
+        <form class="input-group gap-3 d-flex flex-column" asp-action="Index" method="get">
+            <div class="input-group">
+                <input name="searchTitle" type="text" class="form-control" placeholder="Search..." value="@ViewData["CurrentFilter"]">
+            </div>
+            <div class="d-flex justify-content-between">
+                <div class="btn-group" role="group" aria-label="Sorting options">
+                    <!-- sorted by best rated -->
+                    <input type="radio" class="btn-check auto-submit-radio" name="sorting" id="best_rated"
+                           value="best_rated" autocomplete="off" checked="@ViewData["best_rated"]">
+                    <label class="btn btn-outline-primary" for="best_rated">Best Rated</label>
+
+                    <!-- sorted by most reviewed -->
+                    <input type="radio" class="btn-check" name="sorting" id="most_reviewed"
+                           value="most_reviewed" autocomplete="off"checked="@ViewData["most_reviewed"]">
+                    <label class="btn btn-outline-primary" for="most_reviewed">Most Reviewed</label>
+
+                    <!-- alphabetically sorted -->
+                    <input type="radio" class="btn-check" name="sorting" id="alphabetically"
+                           value="alphabetically" autocomplete="off" checked="@ViewData["sorting_alphabetically"]">
+                    <label class="btn btn-outline-primary" for="alphabetically">Alphabetically</label>
+                </div>
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
         </form>
     </div>
 

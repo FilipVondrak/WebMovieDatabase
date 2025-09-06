@@ -164,7 +164,7 @@ public class MoviesController(ApplicationDbContext context) : Controller
         return View(model);
     }
 
-    public async Task<IActionResult> Index(string searchTitle)
+    public async Task<IActionResult> Index(string searchTitle, string sorting)
     {
         ViewData["CurrentFilter"] = searchTitle;
 
@@ -174,6 +174,45 @@ public class MoviesController(ApplicationDbContext context) : Controller
 
         if (!string.IsNullOrEmpty(searchTitle))
             movies = movies.Where(m => m.Title.ToLower().Contains(searchTitle.ToLower())).ToList();
+
+        // sort the movies by preference
+        // sets the view data for the radio buttons
+        switch (sorting)
+        {
+            case "alphabetically":
+                movies = movies
+                    .OrderBy(m => m.Title)
+                    .ToList();
+
+                ViewData["sorting_alphabetically"] = true;
+                ViewData["most_reviewed"] = false;
+                ViewData["best_rated"] = false;
+                break;
+            case "most_reviewed":
+                movies = movies
+                    .OrderByDescending(m => m.Ratings?.Count() ?? 0)
+                    .ToList();
+
+                ViewData["most_reviewed"] = true;
+                ViewData["sorting_alphabetically"] = false;
+                ViewData["best_rated"] = false;
+                break;
+            case "best_rated":
+                movies = movies
+                    .OrderByDescending(m => m.Ratings != null && m.Ratings.Any() ?
+                        m.Ratings!.Average(r => r.StarRating) : 0)
+                    .ToList();
+
+                ViewData["best_rated"] = true;
+                ViewData["most_reviewed"] = false;
+                ViewData["sorting_alphabetically"] = false;
+                break;
+            default:
+                ViewData["best_rated"] = false;
+                ViewData["most_reviewed"] = false;
+                ViewData["sorting_alphabetically"] = false;
+                break;
+        }
 
         return View(movies);
     }
