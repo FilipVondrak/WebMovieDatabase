@@ -48,6 +48,25 @@ public class Program
         app.MapRazorPages()
             .WithStaticAssets();
 
+        // Set base path if config is present
+        if (File.Exists("path.config"))
+        {
+            var content = File.ReadLines("path.config");
+
+            var line = content.FirstOrDefault(l => l.StartsWith("PathBase="));
+
+            if (line != null)
+            {
+                var basePath = line.Split('=')[1];
+
+                if (!string.IsNullOrEmpty(basePath))
+                {
+                    Console.WriteLine($"PathBase set to: {basePath}");
+                    app.UsePathBase(basePath);
+                }
+            }
+        }
+
         app.Run();
     }
 }
